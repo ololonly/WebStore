@@ -5,7 +5,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-using WebStore.Data;
+using WebStore.Services.Data;
 using WebStore.Domain.Entities.Identity;
 using WebStore.Intrefaces.Services;
 using WebStore.Domain.Models;
