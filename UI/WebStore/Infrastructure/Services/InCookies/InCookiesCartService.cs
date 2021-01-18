@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using WebStore.Domain;
 using WebStore.Domain.Entities;
-using WebStore.Infrastructure.Interfaces;
+using WebStore.Intrefaces.Services;
 using WebStore.Infrastructure.Mapping;
 using WebStore.Domain.ViewModels;
 

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using WebStore.Domain;
-using WebStore.Infrastructure.Interfaces;
+using WebStore.Intrefaces.Services;
 using WebStore.Infrastructure.Mapping;
 using WebStore.Domain.ViewModels;
 
