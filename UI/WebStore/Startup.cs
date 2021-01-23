@@ -15,6 +15,9 @@ using WebStore.Intrefaces.Services;
 using WebStore.Services.Products.InCookies;
 using WebStore.Services.Products.InMemory;
 using WebStore.Services.Products.InSQL;
+using WebStore.Clients.TestApi;
+using WebStore.Clients.Values;
+using System.Net.Http.Headers;
 
 namespace WebStore
 {
@@ -63,23 +66,25 @@ namespace WebStore
 
                 opt.SlidingExpiration = true;
             });
+
             
-            //services.AddTransient<IService, ServiceImplementation>();
-            //services.AddScoped<IService, ServiceImplementation>();
-            //services.AddSingleton<IService, ServiceImplementation>();
 
             services.AddTransient<IEmployeesData, InMemoryEmployeesData>();
-            //services.AddTransient<IEmployeesData>(service => new InMemoryEmployeesData());
-            //services.AddTransient<IProductData, InMemoryProductData>();
             services.AddTransient<IProductData, SqlProductData>();
             services.AddScoped<ICartService, InCookiesCartService>();
             services.AddScoped<IOrderService, SqlOrderService>();
+            services.AddScoped<IValuesService, ValuesClient>();
 
-            //services.AddMvc(opt => opt.Conventions.Add(new WebStoreControllerConvention()));
+            services.AddHttpClient<IValuesService, ValuesClient>("WebApiClient",
+                (client) =>
+                {
+                    client.BaseAddress = new Uri(_Configuration["WebAPI"]);
+                    client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                });
+
             services
                .AddControllersWithViews(opt =>
                 {
-                    //opt.Conventions.Add(new WebStoreControllerConvention());
                 })
                .AddRazorRuntimeCompilation();
         }
@@ -99,19 +104,8 @@ namespace WebStore
             app.UseRouting();
 
             app.UseAuthentication();
-            
+
             app.UseAuthorization();
-
-            //app.UseMiddleware<TestMiddleware>();
-            //app.UseMiddleware(typeof(TestMiddleware));
-
-            //app.Map(
-            //    "/Hello", 
-            //    context => context.Run(async request => await request.Response.WriteAsync("Hello World!")));
-
-            //app.MapWhen(
-            //    context => context.Request.Query.ContainsKey("id") && context.Request.Query["id"] == "5",
-            //    context => context.Run(async request => await request.Response.WriteAsync("Hello World with id:5!")));
 
             app.UseWelcomePage("/welcome");
 
@@ -128,10 +122,6 @@ namespace WebStore
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-                // http://localhost:5000 -> controller == "Home" action == "Index"
-                // http://localhost:5000/Products -> controller == "Products" action == "Index"
-                // http://localhost:5000/Products/Page -> controller == "Products" action == "Page"
-                // http://localhost:5000/Products/Page/5 -> controller == "Products" action == "Page" id = "5"
             });
         }
     }
