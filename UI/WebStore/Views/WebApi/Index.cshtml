@@ -1,0 +1,26 @@
+﻿@model IEnumerable<string>
+
+@{ 
+    ViewData["Title"] = "WebApi Test";
+}
+
+<div class="container">
+    <h1>@ViewData["Title"]</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (int i = 0; i < Model.Count(); i++)
+            {
+                <tr>
+                    <th>@i</th>
+                    <th>@Model.ElementAt(i)</th>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
